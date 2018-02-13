@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 router.get("/", function (req, res) {
-  Response.SendHtmlResponse(res, 200, "Welcome!");
+    Response.SendHtmlResponse(res, 200, "Welcome!");
 });
 
 
