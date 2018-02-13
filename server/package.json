@@ -1,0 +1,18 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/app.js"
+  },
+  "dependencies": {
+    "express": "*"
+  },
+  "devDependencies": {
+    "@types/express": "*",
+    "@types/mocha": "*",
+    "chai": "*",
+    "mocha": "*",
+    "typescript": "*"
+  }
+}
