@@ -58,5 +58,6 @@ typings/
 .env
 
 # Misc files
-package-lock.json
 build/
+prod-cert.pem
+package-lock.json

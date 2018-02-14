@@ -3,10 +3,12 @@
     "version": "0.0.1",
     "scripts": {
         "build": "tsc",
-        "start": "node build/app.js"
+        "start": "node build/app.js",
+        "test": "mocha build/test/**/*.js"
     },
     "dependencies": {
-        "express": "*"
+        "express": "*",
+        "jsonwebtoken": "*"
     },
     "devDependencies": {
         "@types/express": "*",

@@ -1,5 +1,4 @@
 {
-    // From: https://github.com/Microsoft/vscode-tslint/blob/master/tslint-tests/tslint.json
     "rules": {
         "array-type": [
             true,
