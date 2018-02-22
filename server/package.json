@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "scripts": {
         "build": "tsc",
+        "build:watch": "tsc --watch",
         "start": "node build/app.js",
         "test": "mocha build/test/**/*.js"
     },
@@ -11,6 +12,7 @@
         "jsonwebtoken": "*"
     },
     "devDependencies": {
+        "@google-cloud/datastore": "*",
         "@types/express": "*",
         "@types/mocha": "*",
         "chai": "*",
