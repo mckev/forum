@@ -5,6 +5,39 @@ export class User {
     private static Kind: string = "users";
     private static NonIndexed: Set<string> = new Set(["password", "thumbsup_tot", "thumbsdown_tot"]);
 
+    public static AddUser(username: string, password: string, thumbsdown_tot: number, thumbsup_tot: number): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            const user = {
+                "username": username,
+                "password": password,
+                "thumbsdown_tot": thumbsdown_tot,
+                "thumbsup_tot": thumbsup_tot,
+                "created": new Date(),
+            }
+            const entity = GcpDatastore.ToDatastore(user, User.Kind, User.NonIndexed);
+            console.log(JSON.stringify(entity));
+            GcpDatastore.Datastore.save(entity, (err) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve();
+            });
+        });
+    }
+
+    public static UpdateUser(user: any): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            const entity = GcpDatastore.ToDatastore(user, User.Kind, User.NonIndexed);
+            console.log(JSON.stringify(entity));
+            GcpDatastore.Datastore.save(entity, (err) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve();
+            });
+        });
+    }
+
     public static GetUser(username: string): Promise<any> {
         // Ref: https://cloud.google.com/datastore/docs/concepts/queries#filters
         return new Promise<any>((resolve, reject) => {
@@ -28,17 +61,4 @@ export class User {
         });
     }
 
-    public static SetUser(user: any): Promise<void> {
-        // To create, set user.id = null
-        return new Promise<void>((resolve, reject) => {
-            const entity = GcpDatastore.ToDatastore(user, User.Kind, User.NonIndexed);
-            console.log(JSON.stringify(entity));
-            GcpDatastore.Datastore.save(entity, (err) => {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve();
-            });
-        });
-    }
 }

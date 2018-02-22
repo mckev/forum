@@ -57,6 +57,7 @@ export class GcpDatastore {
         //   ]
         let entity = { "key": null, "data": [] };
         if (obj.id) {
+            // Update/Create the entity
             entity.key = GcpDatastore.Datastore.key([kind, obj.id]);
         } else {
             // Create a new entity
