@@ -28,7 +28,7 @@ export class GcpDatastore {
         return obj;
     }
 
-    public static ToDatastore(obj, kind: string, nonIndexed: Set<string>) {
+    public static ToDatastore(obj, nonIndexed: Set<string>) {
         // Ref: https://github.com/GoogleCloudPlatform/nodejs-getting-started/blob/master/2-structured-data/books/model-datastore.js
         // Translates from the application's format to the datastore's extended entity format. It also handles marking any
         // specified properties as non-indexed.
@@ -55,22 +55,15 @@ export class GcpDatastore {
         //       }
         //     ]
         //   ]
-        let entity = { "key": null, "data": [] };
-        if (obj.id) {
-            // Update/Create the entity
-            entity.key = GcpDatastore.Datastore.key([kind, obj.id]);
-        } else {
-            // Create a new entity
-            entity.key = GcpDatastore.Datastore.key(kind);
-        }
         delete (obj.id);
+        let data = [];
         for (const key of Object.keys(obj)) {
-            entity.data.push({
+            data.push({
                 "name": key,
                 "value": obj[key],
                 "excludeFromIndexes": nonIndexed.has(key),
             });
         }
-        return entity;
+        return data;
     }
 }

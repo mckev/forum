@@ -22,7 +22,10 @@ export class User {
                 "thumbsdown_tot": thumbsdown_tot,
                 "created": new Date(),
             };
-            const entity = GcpDatastore.ToDatastore(user, User.Kind, User.NonIndexed);
+            const entity = {
+                "key": User.MakeKey(null),
+                "data": GcpDatastore.ToDatastore(user, User.NonIndexed),
+            };
             console.log(JSON.stringify(entity));
             GcpDatastore.Datastore.save(entity, (err, result) => {
                 if (err) {
@@ -34,9 +37,12 @@ export class User {
         });
     }
 
-    public static UpdateUser(user: any): Promise<void> {
+    public static UpdateUser(id, updatedProperties: any): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            const entity = GcpDatastore.ToDatastore(user, User.Kind, User.NonIndexed);
+            const entity = {
+                "key": User.MakeKey(id),
+                "data": GcpDatastore.ToDatastore(updatedProperties, User.NonIndexed),
+            };
             console.log(JSON.stringify(entity));
             GcpDatastore.Datastore.save(entity, (err) => {
                 if (err) {
@@ -47,7 +53,7 @@ export class User {
         });
     }
 
-    public static GetUser(username: string): Promise<any> {
+    public static GetUserByUsername(username: string): Promise<any> {
         // Ref: https://cloud.google.com/datastore/docs/concepts/queries#filters
         return new Promise<any>((resolve, reject) => {
             const query = GcpDatastore.Datastore.createQuery([User.Kind])

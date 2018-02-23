@@ -11,7 +11,7 @@ describe("Test User", () => {
     const thumbsdown_tot = 1;
 
     it("verifies that the user does not exist", async () => {
-        const user = await User.GetUser(username);
+        const user = await User.GetUserByUsername(username);
         expect(user).to.equal(null);
     });
 
@@ -20,7 +20,7 @@ describe("Test User", () => {
     });
 
     it("verifies that user has been created", async () => {
-        const user = await User.GetUser(username);
+        const user = await User.GetUserByUsername(username);
         delete (user.id);
         delete (user.created);
         expect(user).to.deep.equal({
@@ -32,14 +32,14 @@ describe("Test User", () => {
     });
 
     it("updates property of a user", async () => {
-        const user = await User.GetUser(username);
+        const user = await User.GetUserByUsername(username);
         user.thumbsup_tot += 1;
         user.thumbsdown_tot -= 1;
-        await User.UpdateUser(user);
+        await User.UpdateUser(id, user);
     });
 
     it("verifies that user property has been updated", async () => {
-        const user = await User.GetUser(username);
+        const user = await User.GetUserByUsername(username);
         delete (user.id);
         delete (user.created);
         expect(user).to.deep.equal({
