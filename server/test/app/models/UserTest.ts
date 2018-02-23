@@ -31,14 +31,14 @@ describe("Test User", () => {
         });
     });
 
-    it("updates property of a user", async () => {
+    it("updates user properties", async () => {
         const user = await User.GetUserByUsername(username);
         user.thumbsup_tot += 1;
         user.thumbsdown_tot -= 1;
         await User.UpdateUser(id, user);
     });
 
-    it("verifies that user property has been updated", async () => {
+    it("verifies that user properties have been updated", async () => {
         const user = await User.GetUserByUsername(username);
         delete (user.id);
         delete (user.created);
@@ -52,6 +52,11 @@ describe("Test User", () => {
 
     it("deletes the user", async () => {
         await User.DeleteUser(id);
+    });
+
+    it("verifies that the user has been deleted", async () => {
+        const user = await User.GetUserByUsername(username);
+        expect(user).to.equal(null);
     });
 
 });

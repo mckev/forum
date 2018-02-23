@@ -37,7 +37,7 @@ export class User {
         });
     }
 
-    public static UpdateUser(id, updatedProperties: any): Promise<void> {
+    public static UpdateUser(id: number, updatedProperties: any): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const entity = {
                 "key": User.MakeKey(id),
@@ -73,9 +73,9 @@ export class User {
         });
     }
 
-    public static DeleteUser(userId: number): Promise<void> {
+    public static DeleteUser(id: number): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            const key = User.MakeKey(userId);
+            const key = User.MakeKey(id);
             GcpDatastore.Datastore.delete(key, (err) => {
                 if (err) {
                     return reject(err);
