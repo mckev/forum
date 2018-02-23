@@ -1,3 +1,4 @@
+import { Config } from "../Config";
 import { GcpDatastore } from "../classes/GcpDatastore";
 
 
@@ -5,22 +6,30 @@ export class User {
     private static Kind: string = "users";
     private static NonIndexed: Set<string> = new Set(["password", "thumbsup_tot", "thumbsdown_tot"]);
 
-    public static AddUser(username: string, password: string, thumbsdown_tot: number, thumbsup_tot: number): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
+    private static MakeKey(id: number) {
+        return GcpDatastore.Datastore.key({
+            "namespace": Config.GCPDatastoreNamespace,
+            "path": [User.Kind, id],
+        });
+    }
+
+    public static AddUser(username: string, password: string, thumbsup_tot: number, thumbsdown_tot: number): Promise<number> {
+        return new Promise<number>((resolve, reject) => {
             const user = {
                 "username": username,
                 "password": password,
-                "thumbsdown_tot": thumbsdown_tot,
                 "thumbsup_tot": thumbsup_tot,
+                "thumbsdown_tot": thumbsdown_tot,
                 "created": new Date(),
-            }
+            };
             const entity = GcpDatastore.ToDatastore(user, User.Kind, User.NonIndexed);
             console.log(JSON.stringify(entity));
-            GcpDatastore.Datastore.save(entity, (err) => {
+            GcpDatastore.Datastore.save(entity, (err, result) => {
                 if (err) {
                     return reject(err);
                 }
-                return resolve();
+                const id = parseInt(result.mutationResults[0].key.path[0].id, 10);
+                return resolve(id);
             });
         });
     }
@@ -53,10 +62,19 @@ export class User {
                 }
                 const entity = entities[0];
                 const user = GcpDatastore.FromDatastore(entity);
-                for (const key of Object.keys(user)) {
-                    console.log(key + " : " + user[key]);
-                }
                 return resolve(user);
+            });
+        });
+    }
+
+    public static DeleteUser(userId: number): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            const key = User.MakeKey(userId);
+            GcpDatastore.Datastore.delete(key, (err) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve();
             });
         });
     }

@@ -15,6 +15,8 @@ describe("Test Jwt", () => {
 
     it("can create a JWT token", async () => {
         const token = await Jwt.Sign(payload, privateKey);
+        const numberOfDots = token.replace(/[^\.]/g, "").length;
+        expect(numberOfDots).to.equal(2);
     });
 
     it("can verify a JWT token", async () => {
