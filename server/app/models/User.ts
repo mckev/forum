@@ -38,6 +38,7 @@ export class User {
     }
 
     public static UpdateUser(id: number, updatedProperties: any): Promise<void> {
+        // TODO: can do partial update on user properties
         return new Promise<void>((resolve, reject) => {
             const entity = {
                 "key": User.MakeKey(id),

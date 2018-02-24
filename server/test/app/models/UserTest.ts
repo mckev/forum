@@ -21,13 +21,13 @@ describe("Test User", () => {
 
     it("verifies that user has been created", async () => {
         const user = await User.GetUserByUsername(username);
-        delete (user.id);
-        delete (user.created);
         expect(user).to.deep.equal({
+            "id": id,
             "username": username,
             "password": password,
             "thumbsup_tot": thumbsup_tot,
             "thumbsdown_tot": thumbsdown_tot,
+            "created": user.created,
         });
     });
 
@@ -40,13 +40,13 @@ describe("Test User", () => {
 
     it("verifies that user properties have been updated", async () => {
         const user = await User.GetUserByUsername(username);
-        delete (user.id);
-        delete (user.created);
         expect(user).to.deep.equal({
+            "id": id,
             "username": username,
             "password": password,
             "thumbsup_tot": thumbsup_tot + 1,
             "thumbsdown_tot": thumbsdown_tot - 1,
+            "created": user.created,
         });
     });
 

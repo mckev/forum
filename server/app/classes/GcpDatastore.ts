@@ -55,9 +55,11 @@ export class GcpDatastore {
         //       }
         //     ]
         //   ]
-        delete (obj.id);
         let data = [];
         for (const key of Object.keys(obj)) {
+            if (key === "id") {
+                continue;
+            }
             data.push({
                 "name": key,
                 "value": obj[key],
